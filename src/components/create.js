@@ -2,6 +2,15 @@ import React, { useState, useEffect } from "react";
 import "./style.css";
 
 function Create({ users, setUsers, isEdit, editingUser, editingID }) {
+  
+
+  const [feedback, setFeedback] = useState({
+    name: "",
+    age: "",
+    address: "",
+    phone: "",
+  });
+
   const [input, setInput] = useState({
     name: "",
     age: "",
@@ -20,27 +29,38 @@ function Create({ users, setUsers, isEdit, editingUser, editingID }) {
         phone: "",
       });
     }
-    // eslint-disable-next-line
   }, [isEdit]);
-
+  
   const handleSubmit = (e) => {
-    if (!isEdit) {
-      e.preventDefault();
-      setUsers([...users, input]);
-      setInput({
-        name: "",
-        age: "",
-        address: "",
-        phone: "",
-      });
-    } else {
-      e.preventDefault();
-      setUsers((prev) => {
-        const clone = [...prev];
-        clone[editingID] = input;
-        return clone;
-      });
+    if(input.name === ""){
+      setFeedback(feedback.name = "Name required");
     }
+    else if(input.age === ""){
+      setFeedback(feedback.age = "Age required");
+    }
+    else if(input.address === ""){
+      setFeedback(feedback.age = "Address required!");
+    }
+    else if(input.phone === ""){
+      setFeedback(feedback.phone = "Phone required!");
+    }
+      if (!isEdit) {
+        e.preventDefault();
+        setUsers([...users, input]);
+        setInput({
+          name: "",
+          age: "",
+          address: "",
+          phone: "",
+        });
+      } else {
+        e.preventDefault();
+        setUsers((prev) => {
+          const clone = [...prev];
+          clone[editingID] = input;
+          return clone;
+        });
+      }
   };
 
   return (
@@ -66,6 +86,7 @@ function Create({ users, setUsers, isEdit, editingUser, editingID }) {
             }
           ></input>
         </div>
+          <p class="text-danger">{feedback.name}</p>
         <div
           class="form-group"
           style={{ display: "flex", position: "relative" }}
@@ -84,7 +105,9 @@ function Create({ users, setUsers, isEdit, editingUser, editingID }) {
               }))
             }
           ></input>
+          <p></p>
         </div>
+          <p class="text-danger">{feedback.age}</p>
         <div
           class="form-group"
           style={{ display: "flex", position: "relative" }}
@@ -104,6 +127,7 @@ function Create({ users, setUsers, isEdit, editingUser, editingID }) {
             }
           ></input>
         </div>
+          <p class="text-danger">{feedback.address}</p>
         <div
           class="form-group"
           style={{ display: "flex", position: "relative" }}
@@ -111,7 +135,7 @@ function Create({ users, setUsers, isEdit, editingUser, editingID }) {
           <label for="exampleInputPassword1">Phones</label>
           <input
             style={{ width: "500px", position: "absolute", right: "0" }}
-            type="text"
+            type="number"
             class="form-control"
             id="exampleInputPassword1"
             value={input.phone}
@@ -123,8 +147,9 @@ function Create({ users, setUsers, isEdit, editingUser, editingID }) {
             }
           ></input>
         </div>
+          <p class="text-danger">{feedback.phone}</p>
         <button type="submit" class="btn btn-primary">
-          Create User
+          Submit
         </button>
       </form>
     </div>
